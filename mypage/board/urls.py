@@ -11,4 +11,6 @@ urlpatterns = [
     path('<int:post_id>/', views.detail, name='detail'),
     # ex: /board/create/
     path('create/', views.create, name='create'),
+    # ex: /board/update/5/
+    path('update/<int:post_id>/', views.update, name='update'),
 ]
