@@ -1,3 +1,8 @@
+{% extends 'base.html' %}
+
+{% block title %}Update Post{% endblock %}
+
+{% block content %}
 <h1>Update Post</h1>
 
 <form action="/board/update/{{ post.id }}/" method="post">
@@ -7,3 +12,4 @@
 </form>
 
 <p><a href="/board/">Cancel</a></p>
+{% endblock %}

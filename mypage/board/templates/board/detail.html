@@ -1,3 +1,8 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block content %}
 <h1>{{ post.title }}</h1>
 
 {% if error_message %}
@@ -7,11 +12,14 @@
 <p>{{ post.content }}</p>
 
 <p>
-    Date Posted: {{ post.post_date }}
-    <br>
-    Date Updated: {{ post.update_date }}
+    <small>
+        Date Posted: {{ post.post_date }}
+        <br>
+        Date Updated: {{ post.update_date }}
+    </small>
 </p>
 
 <p><a href="{% url "board:update" post.id %}">Update the Post</a></p>
 
 <p><a href="/board/">Back to List</a></p>
+{% endblock %}

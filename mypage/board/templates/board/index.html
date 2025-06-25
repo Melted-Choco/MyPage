@@ -1,3 +1,10 @@
+{% extends 'base.html' %}
+
+{% block title %}Post List{% endblock %}
+
+{% block content %}
+<h1>Post List</h1>
+
 {% if latest_post_list %}
     <ul>
         {% for post in latest_post_list %}
@@ -8,6 +15,5 @@
     <p>No post are available.</p>
 {% endif %}
 
-<ul>
-    <li><a href="/board/create/">create</a></li>
-</ul>
+<a href="/board/create/">Create New Post</a>
+{% endblock %}

@@ -32,7 +32,6 @@ def update(request, post_id):
     if request.method == 'GET':
         return render(request, "board/update.html", {'post': post})
     elif request.method == 'POST':
-        # post = get_object_or_404(Post, pk=post_id)
         title = request.POST['title']
         content = request.POST['content']
         post.title = title
