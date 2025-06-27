@@ -6,14 +6,52 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            max-width: 700px;
-            margin: 30px auto;
+            {% comment %} max-width: 700px; {% endcomment %}
+            margin: 0 20px;
+            {% comment %} margin: 0; {% endcomment %}
             padding: 20px;
             background-color: #f9f9f9;
             color: #333;
         }
 
+        header {
+            background-color: #3498db;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            color: white;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: stretch;
+            {% comment %} max-width: 1000px; {% endcomment %}
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        aside {
+            width: 200px;
+            height: auto;
+            padding: 20px;
+            background-color: #f1f1f1;
+            border-right: 1px solid #ddd;
+        }
+
+        main {
+            flex-grow: 1;
+            padding: 20px;
+            padding-left: 40px;
+            background-color: white;
+            border-left: 1px solid #ddd;
+        }
+
         h1 {
+            {% comment %} margin-top: 0; {% endcomment %}
             color: #444;
         }
 
@@ -70,10 +108,59 @@
         form input[type="submit"]:hover {
             background-color: #27ae60;
         }
+
+        .post-list li {
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .post-number {
+            width: 30px;
+            height: 30px;
+            background-color: #3498db;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            line-height: 30px;
+            border-radius: 4px;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+
+        footer {
+            text-align: center;
+            color: #aaa;
+            padding: 15px;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
-    {% block content %}
-    {% endblock %}
+    <header>
+        <h1>My Board</h1>
+    </header>
+
+    <div class="container">
+        <aside>
+            <h2>Menu</h2>
+            <ul>
+                <li><a href="{% url 'board:index' %}">Home</a></li>
+                <li><a href="/board/create/">Create Post</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </aside>
+
+        <main>
+            {% block content %}
+            {% endblock %}
+        </main>
+    </div>
+
+    <footer>
+        &copy; 2025 My Board. All rights reserved.
+    </footer>
 </body>
 </html>
