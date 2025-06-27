@@ -5,15 +5,38 @@
 {% block content %}
 <h1>Post List</h1>
 
-{% if latest_post_list %}
+{% if page_obj %}
     <ul class="post-list">
-        {% for post in latest_post_list %}
+        {% for post in page_obj %}
             <li>
                 <div class="post-number">{{ post.id }}</div>
                 <a href="{% url 'board:detail' post.id %}">{{ post.title }}</a>
             </li>
         {% endfor %}
     </ul>
+
+    <!-- Paging Link -->
+    <div class="pagination">
+        <div class="pagination-prev">
+            {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}">Prev</a>
+            {% else %}
+                <span class="invisible">Prev</span>
+            {% endif %}
+        </div>
+
+        <div class="pagination-center">
+            <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+        </div>
+
+        <div class="pagination-next">
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">Next</a>
+            {% else %}
+                <span class="invisible">Next</span>
+            {% endif %}
+        </div>
+    </div>
 {% else %}
     <p>No post are available.</p>
 {% endif %}

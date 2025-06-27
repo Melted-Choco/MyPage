@@ -6,9 +6,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            {% comment %} max-width: 700px; {% endcomment %}
             margin: 0 20px;
-            {% comment %} margin: 0; {% endcomment %}
             padding: 20px;
             background-color: #f9f9f9;
             color: #333;
@@ -29,7 +27,6 @@
             display: flex;
             justify-content: space-between;
             align-items: stretch;
-            {% comment %} max-width: 1000px; {% endcomment %}
             margin: 0 auto;
             padding: 20px;
         }
@@ -51,7 +48,6 @@
         }
 
         h1 {
-            {% comment %} margin-top: 0; {% endcomment %}
             color: #444;
         }
 
@@ -127,6 +123,27 @@
             border-radius: 4px;
             margin-right: 10px;
             flex-shrink: 0;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+            }
+
+        .pagination a {
+            margin: 0 10px;
+            color: #3498db;
+            font-weight: bold;
+        }
+
+        .pagination span {
+            margin: 0 10px;
+            color: #555;
+        }
+
+        .invisible {
+            visibility: hidden;
         }
 
         footer {

@@ -1,14 +1,17 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.decorators.csrf import csrf_exempt
+from django.core.paginator import Paginator
 
 from .models import Post
 
 def index(request):
-    latest_post_list = Post.objects.order_by('-post_date')[:10] # only Top 10
-    context = {
-        'latest_post_list': latest_post_list,
-    }
-    return render(request, 'board/index.html', context)
+    latest_post_list = Post.objects.order_by('-post_date')
+    paginator = Paginator(latest_post_list, 10) # 10 posts per one page
+    
+    page_number = request.GET.get('page') # current page
+    page_obj = paginator.get_page(page_number)
+    
+    return render(request, 'board/index.html', {'page_obj': page_obj})
 
 def detail(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
