@@ -6,9 +6,19 @@
 <h1>Create Post</h1>
 
 <form action="/board/create/" method="post">
-    <p><input type="text" name="title" placeholder="title"></p>
-    <p><textarea name="content" id="content" rows="5"></textarea></p>
-    <p><input type="submit"></p>
+    <div id="create-group">
+        <select name="category" id="create-category" required="required">
+            <option value="" selected disabled hidden>카테고리</option>
+            <option value="free">자유</option>
+            <option value="diary">일기</option>
+            <option value="activity">활동</option>
+        </select>
+        <input type="text" name="title" placeholder="title" id="create-title">
+        <input type="checkbox" name="rand_date" value="" id="create-date" style="display: none;"> 
+        <label for="create-date" style="color: #3498db;">날짜 설정</label>
+    </div>
+    <div><textarea name="content" rows="10" id="create-content"></textarea></div>
+    <div><input type="submit" class="submit-button"></div>
 </form>
 
 <p><a href="/board/">Cancel</a></p>
