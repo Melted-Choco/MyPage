@@ -145,6 +145,39 @@
         .invisible {
             visibility: hidden;
         }
+        
+        {% comment %} .hidden {
+            display: none;
+        } {% endcomment %}
+
+        #menu-title {
+            display: flex;
+            cursor: pointer;
+            align-items: center;
+        }
+
+        #arrow {
+            display: inline-block;
+            transition: transform 0.3s;
+            font-size: 0.85rem;
+            margin-right: 8px;
+        }
+
+        .rotated {
+            transform: rotate(90deg);
+        }
+
+        #menu-list {
+            overflow: hidden;
+            max-height: 0;
+            opacity: 0;
+            transition: max-height 0.4s ease, opacity 0.3s ease;
+        }
+
+        #menu-list.open {
+            max-height: 500px;
+            opacity: 1;
+        }
 
         footer {
             text-align: center;
@@ -161,13 +194,17 @@
 
     <div class="container">
         <aside>
-            <h2>Menu</h2>
-            <ul>
+            <h2 id="menu-title">
+                <span id="arrow">▶</span>
+                Menu
+            </h2>
+            <ul id="menu-list">
                 <li><a href="{% url 'board:index' %}">Home</a></li>
                 <li><a href="/board/create/">Create Post</a></li>
                 <li><a href="#">About</a></li>
                 <li><a href="#">Contact</a></li>
             </ul>
+            <h2>Test</h2>
         </aside>
 
         <main>
@@ -179,5 +216,18 @@
     <footer>
         &copy; 2025 My Board. All rights reserved.
     </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const menuTitle = document.getElementById("menu-title");
+            const menuList = document.getElementById("menu-list");
+            const arrow = document.getElementById("arrow");
+
+            menuTitle.addEventListener("click", function() {
+                menuList.classList.toggle("open");
+                arrow.classList.toggle("rotated");
+            });
+        });
+    </script>
 </body>
 </html>
