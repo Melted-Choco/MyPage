@@ -9,7 +9,11 @@
     <p><strong>{{ error_message }}</strong></p>
 {% endif %}
 
-<p>{{ post.content }}</p>
+<div>
+    {% autoescape off %}
+    {{ post.content }}
+    {% endautoescape %}
+</div>
 
 <p>
     <small>
