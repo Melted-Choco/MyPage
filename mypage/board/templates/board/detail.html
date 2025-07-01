@@ -3,7 +3,10 @@
 {% block title %}{{ post.title }}{% endblock %}
 
 {% block content %}
-<h1>{{ post.title }}</h1>
+<div id="category-label">
+    {{ post.get_category_display }}
+</div>
+<h1 style="margin-top: 1px;">{{ post.title }}</h1>
 
 {% if error_message %}
     <p><strong>{{ error_message }}</strong></p>

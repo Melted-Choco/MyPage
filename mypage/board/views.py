@@ -1,6 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator
+from django.utils import timezone
+from datetime import datetime
 
 from .models import Post
 
@@ -22,9 +24,29 @@ def create(request):
     if request.method == 'GET':
         return render(request, "board/create.html")
     elif request.method == 'POST':
+        # request.POST[] : key가 없으면 예외(MultiValueDictKeyError) 발생
+        category = request.POST['category']
         title = request.POST['title']
         content = request.POST['content']
-        newPost = Post(title=title, content=content)
+        
+        # request.POST.get() : key가 없으면 None 반환
+        is_checked = request.POST.get('rand_date')
+        selected_date = request.POST.get('selected_date')
+        
+        if is_checked and selected_date:
+            try:
+                post_date = datetime.strptime(selected_date, '%Y-%m-%d')
+            except ValueError:
+                post_date = timezone.now()
+        else:
+            post_date = timezone.now()
+        
+        newPost = Post(
+            category=category,
+            title=title,
+            content=content,
+            post_date=post_date
+        )
         newPost.save()
         url = '/board/' + str(newPost.id)
         return redirect(url)

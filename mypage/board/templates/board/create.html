@@ -13,15 +13,16 @@
             <option value="diary">일기</option>
             <option value="activity">활동</option>
         </select>
-        <input type="text" name="title" placeholder="Title" id="create-title">
+        <input type="text" name="title" placeholder="Title" id="create-title" required>
         <div id="create-group-date">
             <input type="checkbox" name="rand_date" value="" id="create-date" style="display: none;"> 
             <label for="create-date" style="color: #3498db;">날짜 설정</label>
             <br>
-            <input type="date" name="selected_date" id="selected-date" style="display: none; margin-top: 5px;">
+            <input type="date" name="selected_date" id="selected-date">
         </div>
     </div>
     <div id="toolbar">
+        <!-- 헤더 & 크기 -->
         <select class="ql-header">
             <option selected></option>
             <option value="1">H1</option>
@@ -36,6 +37,26 @@
             <option value="32px">32</option>
             <option value="48px">48</option>
         </select>
+
+        <!-- 폰트 -->
+        <select class="ql-font">
+            <option selected></option>
+            <option value="serif">Serif</option>
+            <option value="monospace">Monospace</option>
+        </select>
+
+        <!-- 색상 -->
+        <select class="ql-color"></select>
+
+        <!-- 정렬 -->
+        <select class="ql-align">
+            <option selected></option>
+            <option value="center"></option>
+            <option value="right"></option>
+            <option value="justify"></option>
+        </select>
+
+        <!-- 서식 -->
         <button class="ql-bold"></button>
         <button class="ql-italic"></button>
         <button class="ql-underline"></button>
