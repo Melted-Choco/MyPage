@@ -33,9 +33,11 @@ def create(request):
         is_checked = request.POST.get('rand_date')
         selected_date = request.POST.get('selected_date')
         
+        print(is_checked)
         if is_checked and selected_date:
             try:
                 post_date = datetime.strptime(selected_date, '%Y-%m-%d')
+                print(post_date)
             except ValueError:
                 post_date = timezone.now()
         else:
@@ -57,10 +59,25 @@ def update(request, post_id):
     if request.method == 'GET':
         return render(request, "board/update.html", {'post': post})
     elif request.method == 'POST':
+        category = request.POST['category']
         title = request.POST['title']
         content = request.POST['content']
+        
+        is_checked = request.POST.get('rand_date')
+        selected_date = request.POST.get('selected_date')
+        
+        if is_checked and selected_date:
+            try:
+                post_date = datetime.strptime(selected_date, '%Y-%m-%d')
+            except ValueError:
+                post_date = timezone.now()
+        else:
+            post_date = post.post_date
+        
+        post.category = category
         post.title = title
         post.content = content
+        post.post_date = post_date
         post.save()
         return render(request, 'board/detail.html', {'post': post})
     

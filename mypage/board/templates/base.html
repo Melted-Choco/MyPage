@@ -353,6 +353,7 @@
             });
         });
 
+        <!-- Quill 연동 -->
         const Size = Quill.import('attributors/style/size');
         Size.whitelist = ['10px', '12px', '16px', '20px', '32px', '48px'];
         Quill.register(Size, true);
@@ -362,6 +363,10 @@
             },
             theme: 'snow'
         });
+        <!-- 초기값 -->
+        const initialContent = document.getElementById('create-content').value;
+        quill.root.innerHTML = initialContent;
+        <!-- 제출 버튼 -->
         document.querySelector('form').addEventListener('submit', function() {
             document.querySelector('#create-content').value = quill.root.innerHTML;
         });
