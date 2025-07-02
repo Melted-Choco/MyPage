@@ -3,30 +3,33 @@
 {% block title %}{{ post.title }}{% endblock %}
 
 {% block content %}
-<div id="category-label">
-    {{ post.get_category_display }}
-</div>
-<h1 style="margin-top: 1px;">{{ post.title }}</h1>
+<article style="max-width: 800px; margin: auto; padding: 24px; border: 1px solid #ddd; border-radius: 12px; background-color: #fdfdfd; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05)">
 
-{% if error_message %}
-    <p><strong>{{ error_message }}</strong></p>
-{% endif %}
+    <div id="category-label">
+        {{ post.get_category_display }}
+    </div>
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+    <h1 style="margin: 0 0 16px 0;">{{ post.title }}</h1>
 
-<div>
-    {% autoescape off %}
-    {{ post.content }}
-    {% endautoescape %}
-</div>
+    {% if error_message %}
+        <p><strong>{{ error_message }}</strong></p>
+    {% endif %}
 
-<p>
-    <small>
-        Date Posted: {{ post.post_date }}
-        <br>
-        Date Updated: {{ post.update_date }}
-    </small>
-</p>
+    <p style="color: #888; margin-bottom: 20px; text-align: right; font-size: 0.8em;">
+        작성일: {{ post.post_date|date:"Y.m.d" }}
+    </p>
+    </div>
 
-<p><a href="{% url "board:update" post.id %}">Update the Post</a></p>
+    <div style="line-height: 1.0; font-size: 1rem; padding: 10px 0; border-top: 1px solid #ddd; border-bottom: 1px solid #ddd;">
+        {% autoescape off %}
+        {{ post.content }}
+        {% endautoescape %}
+    </div>
 
-<p><a href="/board/">Back to List</a></p>
+    <div style="margin-top: 24px;">
+        <a href="{% url "board:update" post.id %}" style="margin-right: 12px; color: #3498db;">Update the Post</a>
+        <a href="/board/" style="color: #888;">Back to List</a>
+    </div>
+
+</article>
 {% endblock %}
