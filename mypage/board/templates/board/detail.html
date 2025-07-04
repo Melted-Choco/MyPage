@@ -28,7 +28,11 @@
 
     <div style="margin-top: 24px;">
         <a href="{% url "board:update" post.id %}" style="margin-right: 12px; color: #3498db;">Update the Post</a>
-        <a href="/board/" style="color: #888;">Back to List</a>
+        <a href="/board/" style="margin-right: 12px; color: #888;">Back to List</a>
+        
+        <form action="{% url 'board:delete' post.id %}" method="post" style="display: inline;">
+            <button type="submit" onclick="return confirm('정말 삭제하시겠습니까?')" id="button-delete">Delete the Post</button>
+        </form>
     </div>
 
 </article>

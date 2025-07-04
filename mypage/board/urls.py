@@ -13,4 +13,6 @@ urlpatterns = [
     path('create/', views.create, name='create'),
     # ex: /board/update/5/
     path('update/<int:post_id>/', views.update, name='update'),
+    # ex: /board/delete/5/
+    path('delete/<int:post_id>/', views.delete, name='delete'),
 ]

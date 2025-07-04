@@ -81,3 +81,15 @@ def update(request, post_id):
         post.save()
         return render(request, 'board/detail.html', {'post': post})
     
+@csrf_exempt
+def delete(request, post_id):
+    post = get_object_or_404(Post, pk=post_id)
+    
+    if request.method == 'POST':
+        post.delete()
+        return redirect('/board/')
+    else:
+        return render(request, 'board/detail.html', {
+            'post': post,
+            'error_message': '삭제는 POST 요청으로만 가능합니다'
+        })
