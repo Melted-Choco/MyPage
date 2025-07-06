@@ -119,18 +119,19 @@
             visibility: hidden;
         }
 
-        #menu-list.open {
-            max-height: 500px;
-            opacity: 1;
-        }
-
-        #menu-category {
+        #menu-category,
+        #menu-unity,
+        #menu-ai,
+        #menu-full {
             display: flex;
             align-items: center;
             cursor: pointer;
         }
 
-        #category-list {
+        #list-category,
+        #list-unity,
+        #list-ai,
+        #list-full {
             overflow: hidden;
             max-height: 0;
             opacity: 0;
@@ -138,11 +139,17 @@
             padding-left: 20px;
             background-color: #fafafa;
         }
-        #category-list.open {
+        #list-category.open,
+        #list-unity.open,
+        #list-ai.open,
+        #list-full.open {
             max-height: 400px;
             opacity: 1;
         }
-        #arrow-category {
+        #arrow-category,
+        #arrow-unity,
+        #arrow-ai,
+        #arrow-full {
             display: inline-block;
             transition: transform 0.3s;
             font-size: 0.65rem;
@@ -152,7 +159,7 @@
             transform: rotate(90deg);
         }
         
-        .category-list-items {
+        .list-items {
             font-size: 0.8rem;
             padding 6px 10px;
             color: #555;
@@ -160,11 +167,11 @@
             cursor: pointer;
             transition: background-color 0.2s;
         }
-        .category-list-items:hover {
+        .list-items:hover {
             background-color: #eaeaea;
             border-radius: 4px;
         }
-        .category-list-items a {
+        .list-items a {
             text-decoration: none;
             color: inherit;
             display: block;
@@ -336,17 +343,60 @@
                     <span id="arrow-category">▶</span>
                     Board
                 </li>
-                <ul id="category-list">
-                    <li class="category-list-items">
+                <ul id="list-category">
+                    <li class="list-items">
                         <a href="/board/?category=free">자유</a>
                     </li>
-                    <li class="category-list-items">
+                    <li class="list-items">
                         <a href="/board/?category=diary">일기</a>
                     </li>
-                    <li class="category-list-items">
+                    <li class="list-items">
                         <a href="/board/?category=activity">활동</a>
                     </li>
                 </ul>
+
+                <li id="menu-unity">
+                    <span id="arrow-unity">▶</span>
+                    Unity
+                </li>
+                <ul id="list-unity">
+                    <li class="list-items">
+                        <a href="/board/">2D</a>
+                    </li>
+                    <li class="list-items">
+                        <a href="/board/">3D</a>
+                    </li>
+                </ul>
+
+                <li id="menu-ai">
+                    <span id="arrow-ai">▶</span>
+                    AI
+                </li>
+                <ul id="list-ai">
+                    <li class="list-items">
+                        <a href="/board/">Android Permission</a>
+                    </li>
+                    <li class="list-items">
+                        <a href="/board/">Chatbot</a>
+                    </li>
+                    <li class="list-items">
+                        <a href="/board/">Classification</a>
+                    </li>
+                </ul>
+
+                <li id="menu-full">
+                    <span id="arrow-full">▶</span>
+                    Full Stack
+                </li>
+                <ul id="list-full">
+                    <li class="list-items">
+                        <a href="/board/">Flea Market</a>
+                    </li>
+                    <li class="list-items">
+                        <a href="/board/">Green Code</a>
+                    </li>
+                </ul>
+
                 <li><a href="/board/create/">Create Post</a></li>
                 <li><a href="#">About</a></li>
                 <li><a href="#">Contact</a></li>
@@ -366,17 +416,32 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            const menuCategory = document.getElementById("menu-category");
-            const categoryList = document.getElementById("category-list");
-            const arrowCategory = document.getElementById("arrow-category");
+            const menuList = ["category", "unity", "ai", "full"];
+
+            menuList.forEach(name => {
+                // template literal은 반드시 백틱(``)을 써야 작동함
+                const menu = document.getElementById(`menu-${name}`);
+                const list = document.getElementById(`list-${name}`);
+                const arrow = document.getElementById(`arrow-${name}`);
+
+                if (menu && list && arrow) {
+                    menu.addEventListener("click", function() {
+                        // 다른 메뉴 닫기
+                        menuList.forEach(other => {
+                            if (other != name) {
+                                document.getElementById(`list-${other}`)?.classList.remove("open");
+                                document.getElementById(`arrow-${other}`)?.classList.remove("rotated");
+                            }
+                        });
+
+                        list.classList.toggle("open");
+                        arrow.classList.toggle("rotated");
+                    });
+                }
+            });
 
             const checkbox = document.getElementById("create-date");
             const selectedDate = document.getElementById("selected-date");
-
-            menuCategory.addEventListener("click", function() {
-                categoryList.classList.toggle("open");
-                arrowCategory.classList.toggle("rotated");
-            });
 
             checkbox.addEventListener("change", function() {
                 selectedDate.style.display = this.checked ? 'block' : 'none';
