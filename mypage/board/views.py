@@ -7,13 +7,22 @@ from datetime import datetime
 from .models import Post
 
 def index(request):
-    latest_post_list = Post.objects.order_by('-post_date')
+    category = request.GET.get('category')
+    
+    if category:
+        latest_post_list = Post.objects.filter(category=category).order_by('-post_date')
+    else:
+        latest_post_list = Post.objects.all().order_by('-post_date')
+        
     paginator = Paginator(latest_post_list, 10) # 10 posts per one page
     
     page_number = request.GET.get('page') # current page
     page_obj = paginator.get_page(page_number)
     
-    return render(request, 'board/index.html', {'page_obj': page_obj})
+    return render(request, 'board/index.html', {
+        'page_obj': page_obj,
+        'selected_category': category,
+    })
 
 def detail(request, post_id):
     post = get_object_or_404(Post, pk=post_id)

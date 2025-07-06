@@ -5,6 +5,17 @@
 {% block content %}
 <h1>Post List</h1>
 
+<form action="" method="get" style="text-align: right; margin-bottom: 20px;">
+    <label for="category">카테고리:</label>
+    <select name="category" id="category">
+        <option value="" selected>전체</option>
+        <option value="free" {% if selected_category == 'free' %}selected{% endif %}>자유</option>
+        <option value="diary" {% if selected_category == 'diary' %}selected{% endif %}>일기</option>
+        <option value="activity" {% if selected_category == 'activity' %}selected{% endif %}>활동</option>
+    </select>
+    <button type="submit">검색</button>
+</form>
+
 {% if page_obj %}
     <ul class="post-list">
         {% for post in page_obj %}
@@ -19,7 +30,7 @@
     <div class="pagination">
         <div class="pagination-prev">
             {% if page_obj.has_previous %}
-                <a href="?page={{ page_obj.previous_page_number }}">Prev</a>
+                <a href="?page={{ page_obj.previous_page_number }}{% if selected_category %}&category={{ selected_category }}{% endif %}">Prev</a>
             {% else %}
                 <span class="invisible">Prev</span>
             {% endif %}
@@ -31,7 +42,7 @@
 
         <div class="pagination-next">
             {% if page_obj.has_next %}
-                <a href="?page={{ page_obj.next_page_number }}">Next</a>
+                <a href="?page={{ page_obj.next_page_number }}{% if selected_category %}&category={{ selected_category }}{% endif %}">Next</a>
             {% else %}
                 <span class="invisible">Next</span>
             {% endif %}
