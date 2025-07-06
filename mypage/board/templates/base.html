@@ -56,6 +56,7 @@
 
         h1 {
             color: #444;
+            display: inline-block;
         }
 
         a {
@@ -118,33 +119,55 @@
             visibility: hidden;
         }
 
-        #menu-title {
+        #menu-list.open {
+            max-height: 500px;
+            opacity: 1;
+        }
+
+        #menu-category {
             display: flex;
-            cursor: pointer;
             align-items: center;
+            cursor: pointer;
         }
 
-        #arrow {
-            display: inline-block;
-            transition: transform 0.3s;
-            font-size: 0.85rem;
-            margin-right: 8px;
-        }
-
-        .rotated {
-            transform: rotate(90deg);
-        }
-
-        #menu-list {
+        #category-list {
             overflow: hidden;
             max-height: 0;
             opacity: 0;
             transition: max-height 0.4s ease, opacity 0.3s ease;
+            padding-left: 20px;
+            background-color: #fafafa;
         }
-
-        #menu-list.open {
-            max-height: 500px;
+        #category-list.open {
+            max-height: 400px;
             opacity: 1;
+        }
+        #arrow-category {
+            display: inline-block;
+            transition: transform 0.3s;
+            font-size: 0.65rem;
+            margin-right: 6px;
+        }
+        .rotated {
+            transform: rotate(90deg);
+        }
+        
+        .category-list-items {
+            font-size: 0.8rem;
+            padding 6px 10px;
+            color: #555;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .category-list-items:hover {
+            background-color: #eaeaea;
+            border-radius: 4px;
+        }
+        .category-list-items a {
+            text-decoration: none;
+            color: inherit;
+            display: block;
         }
 
         footer {
@@ -300,17 +323,30 @@
 </head>
 <body>
     <header>
-        <h1>My Board</h1>
+        <a href="{% url 'board:index' %}">
+            <h1>My Board</h1>
+        </a>
     </header>
 
     <div class="container">
         <aside>
-            <h2 id="menu-title">
-                <span id="arrow">▶</span>
-                Menu
-            </h2>
+            <h2>Menu</h2>
             <ul id="menu-list">
-                <li><a href="{% url 'board:index' %}">Home</a></li>
+                <li id="menu-category">
+                    <span id="arrow-category">▶</span>
+                    Board
+                </li>
+                <ul id="category-list">
+                    <li class="category-list-items">
+                        <a href="/board/?category=free">자유</a>
+                    </li>
+                    <li class="category-list-items">
+                        <a href="/board/?category=diary">일기</a>
+                    </li>
+                    <li class="category-list-items">
+                        <a href="/board/?category=activity">활동</a>
+                    </li>
+                </ul>
                 <li><a href="/board/create/">Create Post</a></li>
                 <li><a href="#">About</a></li>
                 <li><a href="#">Contact</a></li>
@@ -330,16 +366,16 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            const menuTitle = document.getElementById("menu-title");
-            const menuList = document.getElementById("menu-list");
-            const arrow = document.getElementById("arrow");
+            const menuCategory = document.getElementById("menu-category");
+            const categoryList = document.getElementById("category-list");
+            const arrowCategory = document.getElementById("arrow-category");
 
             const checkbox = document.getElementById("create-date");
             const selectedDate = document.getElementById("selected-date");
 
-            menuTitle.addEventListener("click", function() {
-                menuList.classList.toggle("open");
-                arrow.classList.toggle("rotated");
+            menuCategory.addEventListener("click", function() {
+                categoryList.classList.toggle("open");
+                arrowCategory.classList.toggle("rotated");
             });
 
             checkbox.addEventListener("change", function() {
