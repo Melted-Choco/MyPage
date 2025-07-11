@@ -59,6 +59,31 @@
             display: inline-block;
         }
 
+        #tag-bar {
+            display: flex;
+            gap: 8px;
+            margin: 16px 0;
+        }
+        .button-tag {
+            padding: 6px 14px;
+            background-color: #f1f1f1;
+            color: #333;
+            border: 1px solod #ccc;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .button-tag:hover {
+            background-color: #3498db;
+            color: white;
+            border-color: #3498db;
+        }
+        .button-tag.active {
+            background-color: #2980b9;
+            color: white;
+            border-color: #2980d9;
+        }
+
         a {
             color: #3498db;
             text-decoration: none;
@@ -361,10 +386,10 @@
                 </li>
                 <ul id="list-unity">
                     <li class="list-items">
-                        <a href="/board/">2D</a>
+                        <a href="/board/?category=2d">2D</a>
                     </li>
                     <li class="list-items">
-                        <a href="/board/">3D</a>
+                        <a href="/board/?category=3d">3D</a>
                     </li>
                 </ul>
 
@@ -374,13 +399,13 @@
                 </li>
                 <ul id="list-ai">
                     <li class="list-items">
-                        <a href="/board/">Android Permission</a>
+                        <a href="/board/?category=android-permission">Android Permission</a>
                     </li>
                     <li class="list-items">
-                        <a href="/board/">Chatbot</a>
+                        <a href="/board/?category=chatbot">Chatbot</a>
                     </li>
                     <li class="list-items">
-                        <a href="/board/">Classification</a>
+                        <a href="/board/?category=classification">Classification</a>
                     </li>
                 </ul>
 
@@ -390,10 +415,10 @@
                 </li>
                 <ul id="list-full">
                     <li class="list-items">
-                        <a href="/board/">Flea Market</a>
+                        <a href="/board/?category=flea-market">Flea Market</a>
                     </li>
                     <li class="list-items">
-                        <a href="/board/">Green Code</a>
+                        <a href="/board/?category=green-code">Green Code</a>
                     </li>
                 </ul>
 
@@ -443,9 +468,38 @@
             const checkbox = document.getElementById("create-date");
             const selectedDate = document.getElementById("selected-date");
 
-            checkbox.addEventListener("change", function() {
-                selectedDate.style.display = this.checked ? 'block' : 'none';
-            });
+            if (checkbox && selected_date) {
+                checkbox.addEventListener("change", function() {
+                    selectedDate.style.display = this.checked ? 'block' : 'none';
+                });
+            }
+
+            // AJAX -> tag로 분류
+            const buttonTags = document.querySelectorAll(".button-tag");
+            const selectedCategory = new URLSearchParams(window.location.search).get("category");
+            if (buttonTags) {
+                buttonTags.forEach(button => {
+                    button.addEventListener("click", function() {
+                        // 버튼 선택 여부 표시
+                        document.querySelectorAll(".button-tag").forEach(b => b.classList.remove('active'));
+                        this.classList.add('active');
+
+                        // fetch -> AJAX 요청
+                        const tag = this.dataset.tag;
+                        
+                        fetch(`/board/?category=${selectedCategory}&tag=${tag}`, {
+                            headers: {
+                                'X-Requested-With': 'XMLHttpRequest' // AJAX 요청임을 알려주는 용도
+                            }
+                        })
+                        .then(response => response.text())
+                        .then(html => {
+                            document.querySelector(".post-list").innerHTML = html;
+                        })
+                        .catch(err => console.error("AJAX fetch failed:", err));
+                    });
+                });
+            }
         });
 
         // Quill 연동
@@ -461,8 +515,10 @@
             theme: 'snow'
         });
         // 초기값
-        const initialContent = document.getElementById('create-content').value;
-        quill.root.innerHTML = initialContent;
+        const initialContent = document.getElementById('create-content');
+        if (initialContent) {
+            quill.root.innerHTML = initialContent.value;
+        }
         // 제출 버튼
         document.querySelector('form').addEventListener('submit', function() {
             document.querySelector('#create-content').value = quill.root.innerHTML;

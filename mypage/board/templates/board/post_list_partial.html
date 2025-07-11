@@ -1,0 +1,8 @@
+{% for post in page_obj %}
+<li>
+    <div class="post-number">{{ post.id }}</div>
+    <a href="{% url 'board:detail' post.id %}">{{ post.title }}</a>
+</li>
+{% empty %}
+<li>No posts found.</li>
+{% endfor %}

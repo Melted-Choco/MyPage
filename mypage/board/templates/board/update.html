@@ -13,6 +13,16 @@
             <option value="free" {% if post.category == 'free' %}selected{% endif %}>자유</option>
             <option value="diary" {% if post.category == 'diary' %}selected{% endif %}>일기</option>
             <option value="activity" {% if post.category == 'activity' %}selected{% endif %}>활동</option>
+            <!-- Unity -->
+            <option value="2d" {% if post.category == '2d' %}selected{% endif %}>2D</option>
+            <option value="3d" {% if post.category == '3d' %}selected{% endif %}>3D</option>
+            <!-- AI -->
+            <option value="android-permission" {% if post.category == 'android-permission' %}selected{% endif %}>Android Permission</option>
+            <option value="chatbot" {% if post.category == 'chatbot' %}selected{% endif %}>Chatbot</option>
+            <option value="classification" {% if post.category == 'classification' %}selected{% endif %}>Classification</option>
+            <!-- Full Stack -->
+            <option value="flea-market" {% if post.category == 'flea-market' %}selected{% endif %}>Flea Market</option>
+            <option value="green-code" {% if post.category == 'green-code' %}selected{% endif %}>Green Code</option>
         </select>
         <!-- 제목 -->
         <input type="text" name="title" placeholder="Title" id="create-title" value="{{ post.title }}" required>

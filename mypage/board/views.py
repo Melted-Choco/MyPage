@@ -8,21 +8,42 @@ from .models import Post
 
 def index(request):
     category = request.GET.get('category')
+    tag = request.GET.get('tag')
+    parentCategory = get_parent_category(category)
     
+    latest_post_list = Post.objects.all().order_by('-post_date')
     if category:
-        latest_post_list = Post.objects.filter(category=category).order_by('-post_date')
-    else:
-        latest_post_list = Post.objects.all().order_by('-post_date')
+        latest_post_list = latest_post_list.filter(category=category).order_by('-post_date')
+    if tag:
+        latest_post_list = latest_post_list.filter(tag=tag).order_by('-post_date')
         
     paginator = Paginator(latest_post_list, 10) # 10 posts per one page
     
     page_number = request.GET.get('page') # current page
     page_obj = paginator.get_page(page_number)
     
-    return render(request, 'board/index.html', {
+    context = {
         'page_obj': page_obj,
         'selected_category': category,
-    })
+        'parent_category': parentCategory,
+    }
+    
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest': # AJAX 요청인 경우
+        return render(request, 'board/post_list_partial.html', context)
+    else:
+        return render(request, 'board/index.html', context)
+    
+def get_parent_category(category):
+    mapping = {
+        "2d": "Unity",
+        "3d": "Unity",
+        "android-permission": "AI",
+        "chatbot": "AI",
+        "classification": "AI",
+        "flea-market": "Full Stack",
+        "green-code": "Full Stack",
+    }
+    return mapping.get(category, "Unknown")
 
 def detail(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
@@ -35,6 +56,7 @@ def create(request):
     elif request.method == 'POST':
         # request.POST[] : key가 없으면 예외(MultiValueDictKeyError) 발생
         category = request.POST['category']
+        tag = request.POST['tag']
         title = request.POST['title']
         content = request.POST['content']
         
@@ -54,6 +76,7 @@ def create(request):
         
         newPost = Post(
             category=category,
+            tag=tag,
             title=title,
             content=content,
             post_date=post_date
