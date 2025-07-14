@@ -4,16 +4,20 @@
 
 {% block content %}
 <div id="category-title">
-    <span style="font-weight: bold; color: #555;">{{ parent_category }}</span>
-    <span style="color: #aaa;"> &gt; </span>
-    <span style="font-weight: bold; color: #222;">{{ selected_category|title }}</span>
+    <span style="font-size: 1.3rem; font-weight: bold; color: #555;">{{ parent_category }}</span>
+    <span style="font-size: 1.3rem; color: #aaa;"> &gt; </span>
+    <span style="font-size: 1.3rem; font-weight: bold; color: #222;">{{ selected_category|title }}</span>
 </div>
 
-<div id="tag-bar">
-    <button class="button-tag" data-tag="tag1">Tag1</button>
-    <button class="button-tag" data-tag="tag2">Tag2</button>
-    <button class="button-tag" data-tag="tag3">Tag3</button>
-</div>
+{% if tag_list %}
+    <div id="tag-bar">
+        {% for tag in tag_list %}
+            <button class="button-tag" data-tag="{{ tag }}">{{ tag }}</button>
+        {% endfor %}
+        {% comment %} <button class="button-tag" data-tag="tag2">Tag2</button>
+        <button class="button-tag" data-tag="tag3">Tag3</button> {% endcomment %}
+    </div>
+{% endif %}
 
 {% if page_obj %}
     <ul class="post-list">

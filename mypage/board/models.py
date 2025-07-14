@@ -13,11 +13,6 @@ class Post(models.Model):
         ('flea-market', 'Flea Market'),
         ('green-code', 'Green Code'),
     ]
-    TAG_CHOICES = [
-        ('tag1', 'tag1'),
-        ('tag2', 'tag2'),
-        ('tag3', 'tag3'),
-    ]
     
     category = models.CharField(
         max_length=20,
@@ -26,7 +21,6 @@ class Post(models.Model):
     )
     tag = models.CharField(
         max_length=20,
-        choices=TAG_CHOICES,
         default='tag1'
     )
     title = models.CharField(max_length=200)

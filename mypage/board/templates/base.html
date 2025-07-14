@@ -468,7 +468,7 @@
             const checkbox = document.getElementById("create-date");
             const selectedDate = document.getElementById("selected-date");
 
-            if (checkbox && selected_date) {
+            if (checkbox && selectedDate) {
                 checkbox.addEventListener("change", function() {
                     selectedDate.style.display = this.checked ? 'block' : 'none';
                 });
@@ -497,6 +497,36 @@
                             document.querySelector(".post-list").innerHTML = html;
                         })
                         .catch(err => console.error("AJAX fetch failed:", err));
+                    });
+                });
+            }
+
+            // create.html : category별 tag값 설정
+            const CATEGORY_TAGS = {
+                '2d': ['프로젝트', '개발일지', '시연'],
+                '3d': ['프로젝트', '개발일지', '시연'],
+                'android-permission': ['Test1', 'Test2', 'Test3'],
+                'chatbot': ['Test1', 'Test2', 'Test3'],
+                'classification': ['Test1', 'Test2', 'Test3'],
+                'flea-market': ['Test1', 'Test2', 'Test3'],
+                'green-code': ['Test1', 'Test2', 'Test3'],
+            };
+            const categorySelect = document.getElementById("create-category");
+            const tagSelect = document.getElementById("create-tag");
+
+            if (categorySelect && tagSelect) {
+                categorySelect.addEventListener("change", function() {
+                    const category = categorySelect.value;
+
+                    // 기존 tag 옵션 초기화
+                    tagSelect.innerHTML = '<option value="" selected disabled hidden>태그</option>';
+
+                    const tags = CATEGORY_TAGS[category] || [];
+                    tags.forEach(tag => {
+                        const option = document.createElement("option");
+                        option.value = tag;
+                        option.textContent = tag;
+                        tagSelect.appendChild(option);
                     });
                 });
             }

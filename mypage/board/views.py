@@ -6,10 +6,22 @@ from datetime import datetime
 
 from .models import Post
 
+CATEGORY_TAGS = {
+    '2d': ['프로젝트', '개발일지', '시연'],
+    '3d': ['프로젝트', '개발일지', '시연'],
+    'android-permission': ['Test1', 'Test2', 'Test3'],
+    'chatbot': ['Test1', 'Test2', 'Test3'],
+    'classification': ['Test1', 'Test2', 'Test3'],
+    'flea-market': ['Test1', 'Test2', 'Test3'],
+    'green-code': ['Test1', 'Test2', 'Test3'],
+}
+
 def index(request):
     category = request.GET.get('category')
     tag = request.GET.get('tag')
+    
     parentCategory = get_parent_category(category)
+    tag_list = CATEGORY_TAGS.get(category, [])
     
     latest_post_list = Post.objects.all().order_by('-post_date')
     if category:
@@ -26,6 +38,7 @@ def index(request):
         'page_obj': page_obj,
         'selected_category': category,
         'parent_category': parentCategory,
+        'tag_list': tag_list,
     }
     
     if request.headers.get('x-requested-with') == 'XMLHttpRequest': # AJAX 요청인 경우
