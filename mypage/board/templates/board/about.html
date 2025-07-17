@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+
+{% block title %}About Me{% endblock %}
+
+{% block content %}
+<div class="resume-container">
+  <section class="header">
+    <h1>홍길동</h1>
+    <p>Backend Developer | Security Enthusiast | CS Major</p>
+  </section>
+
+  <section class="profile">
+    <h2>Profile</h2>
+    <p>
+      한 줄 소개나 자기소개를 여기에 작성하세요. 예: 끈기 있게 문제를 해결하고, 
+      보안과 백엔드 개발에 흥미를 가진 개발자입니다.
+    </p>
+  </section>
+
+  <section class="skills">
+    <h2>Skills</h2>
+    <ul>
+      <li>Python, Django, JavaScript, C#</li>
+      <li>Unity, MySQL, Git, REST API</li>
+      <li>System Security (self-studied)</li>
+    </ul>
+  </section>
+
+  <section class="experience">
+    <h2>Experience</h2>
+    <ul>
+      <li>
+        <strong>Green Code 프로젝트</strong><br>
+        백엔드 개발 담당. 클라이언트/서버 연동 및 DB 구축, 팀 협업.
+      </li>
+      <li>
+        <strong>2D 슈팅 게임 (Unity)</strong><br>
+        게임 로직과 UI 구성, C#을 활용한 기능 구현.
+      </li>
+    </ul>
+  </section>
+
+  <section class="education">
+    <h2>Education</h2>
+    <p>OO대학교 컴퓨터공학과, 졸업 예정일: 20XX년</p>
+  </section>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+  .resume-container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 40px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    font-family: 'Segoe UI', sans-serif;
+    line-height: 1.6;
+    color: #333;
+  }
+
+  .resume-container h1 {
+    font-size: 2.5rem;
+    margin-bottom: 5px;
+    text-align: center;
+  }
+
+  .resume-container p {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  section {
+    margin-top: 30px;
+  }
+
+  section h2 {
+    font-size: 1.5rem;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+    color: #444;
+  }
+
+  ul {
+    padding-left: 20px;
+  }
+
+  li {
+    margin-bottom: 10px;
+  }
+
+  @media (max-width: 768px) {
+    .resume-container {
+      padding: 20px;
+    }
+
+    .resume-container h1 {
+      font-size: 2rem;
+    }
+
+    section h2 {
+      font-size: 1.2rem;
+    }
+  }
+</style>
+{% endblock %}

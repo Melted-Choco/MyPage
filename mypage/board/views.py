@@ -138,3 +138,6 @@ def delete(request, post_id):
             'post': post,
             'error_message': '삭제는 POST 요청으로만 가능합니다'
         })
+        
+def about(request):
+    return render(request, 'board/about.html')

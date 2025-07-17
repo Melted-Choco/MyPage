@@ -15,4 +15,6 @@ urlpatterns = [
     path('update/<int:post_id>/', views.update, name='update'),
     # ex: /board/delete/5/
     path('delete/<int:post_id>/', views.delete, name='delete'),
+    # ex: /board/about/
+    path('about/', views.about, name='about'),
 ]

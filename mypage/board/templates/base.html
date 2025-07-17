@@ -259,7 +259,8 @@
         }
         
         #create-category,
-        #create-title {
+        #create-title,
+        #create-tag {
             padding: 0px 10px;
             border: 1px solid #ccc;
             border-radius: 4px;
@@ -267,7 +268,8 @@
             height: 44px;
         }
 
-        #create-category {
+        #create-category,
+        #create-tag {
             width: 120px;
             background-color: white;
             appearance: none;
@@ -423,7 +425,7 @@
                 </ul>
 
                 <li><a href="/board/create/">Create Post</a></li>
-                <li><a href="#">About</a></li>
+                <li><a href="{% url 'board:about' %}">About</a></li>
                 <li><a href="#">Contact</a></li>
             </ul>
             <h2>Test</h2>
