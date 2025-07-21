@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}My Board{% endblock %}</title>
+    <!-- Quill 스타일 및 스크립트 -->
+    <link rel="stylesheet" href="https://cdn.quilljs.com/1.3.6/quill.snow.css">
+    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+
+    <!-- Image Resize Module CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/quill-image-resize-module@3.0.0/image-resize.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        header {
+            background-color: #3498db;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            color: white;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: stretch;
+            margin: 0 auto;
+            padding: 20px 0;
+        }
+
+        aside {
+            width: 200px;
+            height: auto;
+            padding: 20px;
+            background-color: #f1f1f1;
+            border-right: 1px solid #ddd;
+        }
+
+        main {
+            flex-grow: 1;
+            padding: 20px;
+            padding-left: 30px;
+            padding-right: 40px;
+            background-color: white;
+            border-left: 1px solid #ddd;
+        }
+
+        h1 {
+            color: #444;
+            display: inline-block;
+        }
+
+        #tag-bar {
+            display: flex;
+            gap: 8px;
+            margin: 16px 0;
+        }
+        .button-tag {
+            padding: 6px 14px;
+            background-color: #f1f1f1;
+            color: #333;
+            border: 1px solod #ccc;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .button-tag:hover {
+            background-color: #3498db;
+            color: white;
+            border-color: #3498db;
+        }
+        .button-tag.active {
+            background-color: #2980b9;
+            color: white;
+            border-color: #2980d9;
+        }
+
+        a {
+            color: #3498db;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .post-list li {
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .post-number {
+            width: 30px;
+            height: 30px;
+            background-color: #3498db;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            line-height: 30px;
+            border-radius: 4px;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+            }
+
+        .pagination a {
+            margin: 0 10px;
+            color: #3498db;
+            font-weight: bold;
+        }
+
+        .pagination span {
+            margin: 0 10px;
+            color: #555;
+        }
+
+        .invisible {
+            visibility: hidden;
+        }
+
+        #menu-category,
+        #menu-unity,
+        #menu-ai,
+        #menu-full {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        #list-category,
+        #list-unity,
+        #list-ai,
+        #list-full {
+            overflow: hidden;
+            max-height: 0;
+            opacity: 0;
+            transition: max-height 0.4s ease, opacity 0.3s ease;
+            padding-left: 20px;
+            background-color: #fafafa;
+        }
+        #list-category.open,
+        #list-unity.open,
+        #list-ai.open,
+        #list-full.open {
+            max-height: 400px;
+            opacity: 1;
+        }
+        #arrow-category,
+        #arrow-unity,
+        #arrow-ai,
+        #arrow-full {
+            display: inline-block;
+            transition: transform 0.3s;
+            font-size: 0.65rem;
+            margin-right: 6px;
+        }
+        .rotated {
+            transform: rotate(90deg);
+        }
+        
+        .list-items {
+            font-size: 0.8rem;
+            padding 6px 10px;
+            color: #555;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .list-items:hover {
+            background-color: #eaeaea;
+            border-radius: 4px;
+        }
+        .list-items a {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        footer {
+            text-align: center;
+            color: #aaa;
+            padding: 15px;
+            font-size: 14px;
+        }
+
+        /* detail.html */
+        #category-label {
+            display: inline-flex;
+            align-items: center;
+            font-size: 0.85rem;
+            background-color: #3498db;
+            color: white;
+            font-weight: bold;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            padding: 4px 8px;
+            border-radius: 9999px;
+            margin-bottom: 6px;
+            user-select: none; /* 드래그 방지 */
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3); /* 약간의 입체감 */
+            letter-spacing: 0.05em; /* 자간 */
+        }
+
+        #category-label::before {
+            content: "";
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background-color: white;
+            border-radius: 50%; /* 원 형태 */
+            margin-right: 6px;
+            box-shadow: 0 0 4px rgba(255,255,255,0.7);
+        }
+
+        #button-delete {
+            background: none;
+            border: none;
+            color: crimson;
+            cursor: pointer;
+            padding: 0;
+            font-size: 16px;
+        }
+
+        #button-delete:hover {
+            text-decoration: underline;
+        }
+
+        /* create.html */
+        #create-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            align-items: flex-start;
+        }
+        
+        #create-category,
+        #create-title,
+        #create-tag {
+            padding: 0px 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+            height: 44px;
+        }
+
+        #create-category,
+        #create-tag {
+            width: 120px;
+            background-color: white;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D'10'%20height%3D'5'%20viewBox%3D'0%200%2010%205'%20xmlns%3D'http%3A//www.w3.org/2000/svg'%3E%3Cpath%20d%3D'M0%200l5%205%205-5z'%20fill%3D'%23666'%20/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 10px 5px;
+        }
+
+        #create-title {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        #editor-container {
+            width: 100%;
+            padding: 0px;
+            font-size: 14px;
+            margin-bottom: 12px;
+            position: relative;
+        }
+
+        #create-group-date {
+            width: 120px;
+        }
+
+        label[for="create-date"] {
+            position: relative;
+            padding-left: 25px;
+            margin-left: 10px;
+            cursor: pointer;
+            font-size: 12px;
+            line-height: 16px;
+            user-select: none;
+        }
+
+        label[for="create-date"]::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #3498db;
+            border-radius: 4px;
+            background-color: white;
+            box-sizing: border-box;
+            transition: background-color 0.2s, border-color 0.2s;
+        }
+
+        #create-date:checked + label::before {
+            background-color: #3498db;
+            border-color: #3498db;
+        }
+
+        #create-date:checked + label::after {
+            content: "✔";
+            position: absolute;
+            left: 3px;
+            top: 0px;
+            font-size: 12px;
+            color: white;
+        }
+
+        #selected-date {
+            display: none;
+            margin-top: 5px;
+            margin-left: 10px;
+            width: 100px;
+        }
+
+        .button-submit {
+            background-color: #2ecc71;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .button-submit:hover {
+            background-color: #27ae60;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="{% url 'board:index' %}">
+            <h1>My Board</h1>
+        </a>
+    </header>
+
+    <div class="container">
+        <aside>
+            <h2>Menu</h2>
+            <ul id="menu-list">
+                <li id="menu-category">
+                    <span id="arrow-category">▶</span>
+                    Board
+                </li>
+                <ul id="list-category">
+                    <li class="list-items">
+                        <a href="/board/?category=free">자유</a>
+                    </li>
+                    <li class="list-items">
+                        <a href="/board/?category=diary">일기</a>
+                    </li>
+                    <li class="list-items">
+                        <a href="/board/?category=activity">활동</a>
+                    </li>
+                </ul>
+
+                <li id="menu-unity">
+                    <span id="arrow-unity">▶</span>
+                    Unity
+                </li>
+                <ul id="list-unity">
+                    <li class="list-items">
+                        <a href="/board/?category=2d">2D</a>
+                    </li>
+                    <li class="list-items">
+                        <a href="/board/?category=3d">3D</a>
+                    </li>
+                </ul>
+
+                <li id="menu-ai">
+                    <span id="arrow-ai">▶</span>
+                    AI
+                </li>
+                <ul id="list-ai">
+                    <li class="list-items">
+                        <a href="/board/?category=android-permission">Android Permission</a>
+                    </li>
+                    <li class="list-items">
+                        <a href="/board/?category=chatbot">Chatbot</a>
+                    </li>
+                    <li class="list-items">
+                        <a href="/board/?category=classification">Classification</a>
+                    </li>
+                </ul>
+
+                <li id="menu-full">
+                    <span id="arrow-full">▶</span>
+                    Full Stack
+                </li>
+                <ul id="list-full">
+                    <li class="list-items">
+                        <a href="/board/?category=flea-market">Flea Market</a>
+                    </li>
+                    <li class="list-items">
+                        <a href="/board/?category=green-code">Green Code</a>
+                    </li>
+                </ul>
+
+                <li><a href="/board/create/">Create Post</a></li>
+                <li><a href="{% url 'board:about' %}">About</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+            <h2>Test</h2>
+        </aside>
+
+        <main>
+            {% block content %}
+            {% endblock %}
+        </main>
+    </div>
+
+    <footer>
+        &copy; 2025 My Board. All rights reserved.
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const menuList = ["category", "unity", "ai", "full"];
+
+            menuList.forEach(name => {
+                // template literal은 반드시 백틱(``)을 써야 작동함
+                const menu = document.getElementById(`menu-${name}`);
+                const list = document.getElementById(`list-${name}`);
+                const arrow = document.getElementById(`arrow-${name}`);
+
+                if (menu && list && arrow) {
+                    menu.addEventListener("click", function() {
+                        // 다른 메뉴 닫기
+                        menuList.forEach(other => {
+                            if (other != name) {
+                                document.getElementById(`list-${other}`)?.classList.remove("open");
+                                document.getElementById(`arrow-${other}`)?.classList.remove("rotated");
+                            }
+                        });
+
+                        list.classList.toggle("open");
+                        arrow.classList.toggle("rotated");
+                    });
+                }
+            });
+
+            const checkbox = document.getElementById("create-date");
+            const selectedDate = document.getElementById("selected-date");
+
+            if (checkbox && selectedDate) {
+                checkbox.addEventListener("change", function() {
+                    selectedDate.style.display = this.checked ? 'block' : 'none';
+                });
+            }
+
+            // AJAX -> tag로 분류
+            const buttonTags = document.querySelectorAll(".button-tag");
+            const selectedCategory = new URLSearchParams(window.location.search).get("category");
+            if (buttonTags) {
+                buttonTags.forEach(button => {
+                    button.addEventListener("click", function() {
+                        // 버튼 선택 여부 표시
+                        document.querySelectorAll(".button-tag").forEach(b => b.classList.remove('active'));
+                        this.classList.add('active');
+
+                        // fetch -> AJAX 요청
+                        const tag = this.dataset.tag;
+                        
+                        fetch(`/board/?category=${selectedCategory}&tag=${tag}`, {
+                            headers: {
+                                'X-Requested-With': 'XMLHttpRequest' // AJAX 요청임을 알려주는 용도
+                            }
+                        })
+                        .then(response => response.text())
+                        .then(html => {
+                            document.querySelector(".post-list").innerHTML = html;
+                        })
+                        .catch(err => console.error("AJAX fetch failed:", err));
+                    });
+                });
+            }
+
+            // create.html : category별 tag값 설정
+            const CATEGORY_TAGS = {
+                '2d': ['프로젝트', '개발일지', '시연'],
+                '3d': ['프로젝트', '개발일지', '시연'],
+                'android-permission': ['Test1', 'Test2', 'Test3'],
+                'chatbot': ['Test1', 'Test2', 'Test3'],
+                'classification': ['Test1', 'Test2', 'Test3'],
+                'flea-market': ['Test1', 'Test2', 'Test3'],
+                'green-code': ['Test1', 'Test2', 'Test3'],
+            };
+            const categorySelect = document.getElementById("create-category");
+            const tagSelect = document.getElementById("create-tag");
+
+            if (categorySelect && tagSelect) {
+                categorySelect.addEventListener("change", function() {
+                    const category = categorySelect.value;
+
+                    // 기존 tag 옵션 초기화
+                    tagSelect.innerHTML = '<option value="" selected disabled hidden>태그</option>';
+
+                    const tags = CATEGORY_TAGS[category] || [];
+                    tags.forEach(tag => {
+                        const option = document.createElement("option");
+                        option.value = tag;
+                        option.textContent = tag;
+                        tagSelect.appendChild(option);
+                    });
+                });
+            }
+        });
+
+        // Quill 연동
+        const Size = Quill.import('attributors/style/size');
+        Size.whitelist = ['10px', '12px', '16px', '20px', '32px', '48px'];
+        Quill.register(Size, true);
+        Quill.register('modules/imageResize', window.ImageResize.default); // image resize 모듈 등록
+        const quill = new Quill('#editor-container', {
+            modules: {
+                toolbar: '#toolbar',
+                imageResize: {}
+            },
+            theme: 'snow'
+        });
+        // 초기값
+        const initialContent = document.getElementById('create-content');
+        if (initialContent) {
+            quill.root.innerHTML = initialContent.value;
+        }
+        // 제출 버튼
+        document.querySelector('form').addEventListener('submit', function() {
+            document.querySelector('#create-content').value = quill.root.innerHTML;
+        });
+    </script>
+</body>
+</html>

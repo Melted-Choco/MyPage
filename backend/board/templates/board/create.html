@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block title %}Create Post{% endblock %}
+
+{% block content %}
+<h1>Create Post</h1>
+
+<form action="/board/create/" method="post">
+    <div id="create-group">
+        <select name="category" id="create-category" required="required">
+            <option value="" selected disabled hidden>카테고리</option>
+            <option value="free">자유</option>
+            <option value="diary">일기</option>
+            <option value="activity">활동</option>
+            <!-- Unity -->
+            <option value="2d">2D</option>
+            <option value="3d">3D</option>
+            <!-- AI -->
+            <option value="android-permission">앱 권한</option>
+            <option value="chatbot">챗봇</option>
+            <option value="classification">분류</option>
+            <!-- Full Stack -->
+            <option value="flea-market">Flea Market</option>
+            <option value="green-code">Green Code</option>
+        </select>
+        <select name="tag" id="create-tag" required="required" style="width: 10%; min-width: 60px; max-width: 80px;">
+            <option value="" selected disabled hidden>태그</option>
+        </select>
+        <input type="text" name="title" placeholder="Title" id="create-title" required>
+        <div id="create-group-date">
+            <input type="checkbox" name="rand_date" value="on" id="create-date" style="display: none;"> 
+            <label for="create-date" style="color: #3498db;">날짜 설정</label>
+            <br>
+            <input type="date" name="selected_date" id="selected-date">
+        </div>
+    </div>
+    <div id="toolbar">
+        <!-- 헤더 & 크기 -->
+        <select class="ql-header">
+            <option selected></option>
+            <option value="1">H1</option>
+            <option value="2">H2</option>
+            <option value="3">H3</option>
+        </select>
+        <select class="ql-size">
+            <option value="10px">10</option>
+            <option value="12px">12</option>
+            <option selected value="16px">16</option>
+            <option value="20px">20</option>
+            <option value="32px">32</option>
+            <option value="48px">48</option>
+        </select>
+
+        <!-- 폰트 -->
+        <select class="ql-font">
+            <option selected></option>
+            <option value="serif">Serif</option>
+            <option value="monospace">Monospace</option>
+        </select>
+
+        <!-- 색상 -->
+        <select class="ql-color"></select>
+
+        <!-- 정렬 -->
+        <select class="ql-align">
+            <option selected></option>
+            <option value="center"></option>
+            <option value="right"></option>
+            <option value="justify"></option>
+        </select>
+
+        <!-- 서식 -->
+        <button class="ql-bold"></button>
+        <button class="ql-italic"></button>
+        <button class="ql-underline"></button>
+        <button class="ql-link"></button>
+        <button class="ql-image"></button>
+    </div>
+    <div id="editor-container" style="height: 300px;"></div>
+    <textarea name="content" id="create-content" style="display: none;"></textarea>
+    <div><input type="submit" class="button-submit"></div>
+</form>
+
+<p><a href="/board/">Cancel</a></p>
+{% endblock %}

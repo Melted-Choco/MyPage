@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %}Post List{% endblock %}
+
+{% block content %}
+<div id="category-title">
+    <span style="font-size: 1.3rem; font-weight: bold; color: #555;">{{ parent_category }}</span>
+    <span style="font-size: 1.3rem; color: #aaa;"> &gt; </span>
+    <span style="font-size: 1.3rem; font-weight: bold; color: #222;">{{ selected_category|title }}</span>
+</div>
+
+{% if tag_list %}
+    <div id="tag-bar">
+        {% for tag in tag_list %}
+            <button class="button-tag" data-tag="{{ tag }}">{{ tag }}</button>
+        {% endfor %}
+        {% comment %} <button class="button-tag" data-tag="tag2">Tag2</button>
+        <button class="button-tag" data-tag="tag3">Tag3</button> {% endcomment %}
+    </div>
+{% endif %}
+
+{% if page_obj %}
+    <ul class="post-list">
+        {% for post in page_obj %}
+            <li>
+                <div class="post-number">{{ post.id }}</div>
+                <a href="{% url 'board:detail' post.id %}">{{ post.title }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <!-- Paging Link -->
+    <div class="pagination">
+        <div class="pagination-prev">
+            {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}{% if selected_category %}&category={{ selected_category }}{% endif %}">Prev</a>
+            {% else %}
+                <span class="invisible">Prev</span>
+            {% endif %}
+        </div>
+
+        <div class="pagination-center">
+            <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+        </div>
+
+        <div class="pagination-next">
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}{% if selected_category %}&category={{ selected_category }}{% endif %}">Next</a>
+            {% else %}
+                <span class="invisible">Next</span>
+            {% endif %}
+        </div>
+    </div>
+{% else %}
+    <p>No post are available.</p>
+{% endif %}
+
+<a href="/board/create/">Create New Post</a>
+{% endblock %}

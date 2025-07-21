@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block title %}About Me{% endblock %}
+
+{% block content %}
+<div class="resume-container">
+  <section class="header">
+    <h1>홍길동</h1>
+    <p>소프트웨어 개발자</p>
+    {% comment %} <p>Backend Developer | Security Enthusiast | CS Major</p> {% endcomment %}
+  </section>
+
+  <section class="contact">
+    <h3>Contact</h3>
+    <p>010-1234-5678</p>
+    <p>jtm4902@naver.com</p>
+    <p><a href="https://github.com/Melted-Choco">github</a></p>
+  </section>
+
+  <section class="profile">
+    <h2>Profile</h2>
+    <p>
+      효율적인 코드를 선호하고 정보 보안에 많은 관심을 가진 신입 소프트웨어 개발자입니다.
+      다양한 시도를 두려워하지 않으며 시스템 개선을 위해 지속적으로 고민합니다.
+      프로젝트를 수행함에 있어 적극적으로 참여하고 원활한 소통을 위해 꾸준히 노력하는 개발자가 되고자 합니다.
+    </p>
+  </section>
+
+  <section class="skills">
+    <h2>Skills</h2>
+    <ul>
+      <li>Python, Django, JavaScript, C#</li>
+      <li>Unity, MySQL, Git, REST API</li>
+      <li>System Security (self-studied)</li>
+    </ul>
+  </section>
+
+  <section class="education">
+    <h2>Education</h2>
+    <p>성균관대학교 소프트웨어학과</p>
+    <p>2019.03 ~ 2025.02 수료</p>
+    <p>학점 4.05 / 4.5</p>
+    <p>ps. 인턴 미경험</p>
+  </section>
+
+  <section class="certificate">
+    <h2>Certificate</h2>
+    <p>컴퓨터활용능력 1급</p>
+  </section>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+  .resume-container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 40px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    font-family: 'Segoe UI', sans-serif;
+    line-height: 1.6;
+    color: #333;
+  }
+
+  .resume-container h1 {
+    font-size: 2.5rem;
+    margin-bottom: 5px;
+    text-align: center;
+  }
+
+  .resume-container p {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  section {
+    margin-top: 30px;
+  }
+
+  section h2 {
+    font-size: 1.5rem;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+    color: #444;
+  }
+
+  ul {
+    padding-left: 20px;
+  }
+
+  li {
+    margin-bottom: 10px;
+  }
+
+  @media (max-width: 768px) {
+    .resume-container {
+      padding: 20px;
+    }
+
+    .resume-container h1 {
+      font-size: 2rem;
+    }
+
+    section h2 {
+      font-size: 1.2rem;
+    }
+  }
+</style>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Post Detail (Vue){% endblock %}
+
+{% block content %}
+<div id="post-app" style="max-width: 800px; margin: auto;"></div>
+
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<script src="{% static 'js/post_detail_vue.js' %}"></script>
+<script>
+    window.addEventListener('DOMContentLoaded', function() {
+        const postId = {{ post.id }};
+        loadPostApp(postId); // post_detail_vue.js에 있는 loadPostApp 호출
+    });
+</script>
+{% endblock  %}

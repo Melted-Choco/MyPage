@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block content %}
+<article style="max-width: 800px; margin: auto; padding: 24px; border: 1px solid #ddd; border-radius: 12px; background-color: #fdfdfd; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05)">
+
+    <div id="category-label">
+        {{ post.get_category_display }}
+    </div>
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+    <h1 style="margin: 0 0 16px 0;">{{ post.title }}</h1>
+
+    {% if error_message %}
+        <p><strong>{{ error_message }}</strong></p>
+    {% endif %}
+
+    <p style="color: #888; margin-bottom: 20px; text-align: right; font-size: 0.8em;">
+        작성일: {{ post.post_date|date:"Y.m.d" }}
+    </p>
+    </div>
+
+    <div style="line-height: 1.0; font-size: 1rem; padding: 10px 0; border-top: 1px solid #ddd; border-bottom: 1px solid #ddd;">
+        {% autoescape off %}
+        {{ post.content }}
+        {% endautoescape %}
+    </div>
+
+    <div style="margin-top: 24px;">
+        <a href="{% url "board:update" post.id %}" style="margin-right: 12px; color: #3498db;">Update the Post</a>
+        <a href="/board/" style="margin-right: 12px; color: #888;">Back to List</a>
+        
+        <form action="{% url 'board:delete' post.id %}" method="post" style="display: inline;">
+            <button type="submit" onclick="return confirm('정말 삭제하시겠습니까?')" id="button-delete">Delete the Post</button>
+        </form>
+    </div>
+
+</article>
+{% endblock %}
