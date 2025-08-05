@@ -1,54 +1,46 @@
-<!-- <script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
-</script>
-
-<template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-    </div>
-  </header>
-
-  <main>
-    <TheWelcome />
-  </main>
-</template>
-
-<style scoped>
-header {
-  line-height: 1.5;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-}
-</style> -->
-
 <template>
   <div id="app">
-    <PostDetail :postId="3" />
+    <!-- <PostDetail :postId="3" /> -->
+    <header>
+      <!-- <router-link to="/"> -->
+      <a href="/">
+        <h1>My Board</h1>
+      </a>
+      <!-- </router-link> -->
+    </header>
+
+    <div class="container">
+      <aside>
+        <h2>Menu</h2>
+        <ul id="menu-list">
+          <li @click="toggleMenu('category')" id="menu-category">
+            <span :class="{ rotated: openMenu === 'category'}">▶</span>
+            Board
+          </li>
+          <!-- 여기부터 진행 -->
+          <ul :class="{ open: openMenu === 'category'}">
+            <li><router-link to="/category/1">Category 1</router-link></li>
+            <li><router-link to="/category/2">Category 2</router-link></li>
+          </ul>
+
+          <li @click="toggleMenu('about')">
+            <span :class="{ rotated: openMenu === 'about' }">▶</span>
+            About
+          </li>
+          <ul :class="{ open: openMenu === 'about' }">
+            <li><router-link to="/about">소개</router-link></li>
+          </ul>
+        </ul>
+      </aside>
+
+      <main>
+        <router-view />
+      </main>
+    </div>
+
+    <footer>
+      &copy; 2025 My Board. All rights reserved.
+    </footer>
   </div>
 </template>
 
@@ -56,11 +48,17 @@ header {
 import PostDetail from './components/PostDetail.vue'
 
 export default {
-  name: 'App',
-  components: {
-    PostDetail
-  }
-}
+  data() {
+    return {
+      openMenu: null,
+    };
+  },
+  methods: {
+    toggleMenu(menuName) {
+      this.openMenu = this.openMenu === menuName ? null : menuName;
+    },
+  },
+};
 </script>
 
 <style>

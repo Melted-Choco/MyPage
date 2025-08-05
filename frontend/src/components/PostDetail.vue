@@ -28,7 +28,7 @@ export default {
         }
     },
     mounted() {
-        fetch('http://127.0.0.1:8000/board/api/posts/3/') // 절대경로
+        fetch(`http://127.0.0.1:8000/board/api/posts/3/`) // 절대경로
             .then(res => res.json())
             /*.then(text => {
                 console.log('원본 응답:', text);
