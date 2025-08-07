@@ -11,6 +11,7 @@ urlpatterns = [
     path('<int:post_id>/', views.detail, name='detail'),
     # Vue API
     path('api/posts/<int:post_id>/', views.post_api_detail, name='post_api_detail'),
+    path('api/posts/', views.post_api_index, name='post_api_index'),
     # ex: /board/create/
     path('create/', views.create, name='create'),
     # ex: /board/update/5/

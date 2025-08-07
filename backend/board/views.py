@@ -73,6 +73,37 @@ def post_api_detail(request, post_id):
         'content': post.content,
         'post_date': post.post_date.isoformat()
     })
+    
+def post_api_index(request):
+    category = request.GET.get('category')
+    #tag = request.GET.get('tag')
+    
+    #parentCategory = get_parent_category(category)
+    #tag_list = CATEGORY_TAGS.get(category, [])
+    
+    latest_post_list = Post.objects.all().order_by('-post_date')
+    if category:
+        latest_post_list = latest_post_list.filter(category=category).order_by('-post_date')
+    #if tag:
+    #    latest_post_list = latest_post_list.filter(tag=tag).order_by('-post_date')
+        
+    #paginator = Paginator(latest_post_list, 10) # 10 posts per one page
+    
+    #page_number = request.GET.get('page') # current page
+    #page_obj = paginator.get_page(page_number)
+    
+    post_data = [
+        {
+            'id': post.id,
+            'title': post.title,
+            'category': post.category,
+            'content': post.content,
+            'post_date': post.post_date.strftime('%Y-%m-%d'),
+        }
+        for post in latest_post_list
+    ]
+    
+    return JsonResponse({'posts': post_data})
 
 @csrf_exempt
 def create(request):

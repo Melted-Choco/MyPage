@@ -14,27 +14,50 @@
         <h2>Menu</h2>
         <ul id="menu-list">
           <li @click="toggleMenu('category')" id="menu-category">
-            <span :class="{ rotated: openMenu === 'category'}">▶</span>
+            <span :class="['arrow', { rotated: selectMenu === 'category'}]">▶</span>
             Board
           </li>
-          <!-- 여기부터 진행 -->
-          <ul :class="{ open: openMenu === 'category'}">
-            <li><router-link to="/category/1">Category 1</router-link></li>
-            <li><router-link to="/category/2">Category 2</router-link></li>
+          
+          <li @click="toggleMenu('unity')" id="menu-unity">
+            <span :class="['arrow', { rotated: selectMenu === 'unity'}]">▶</span>
+            Unity
+          </li>
+          <ul :class="{ open: selectMenu === 'unity'}" id="list-unity">
+            <li @click="fetchPosts('2d')" class="list-items">2D</li>
+            <li @click="fetchPosts('3d')" class="list-items">3D</li>
           </ul>
 
-          <li @click="toggleMenu('about')">
-            <span :class="{ rotated: openMenu === 'about' }">▶</span>
+          <li @click="toggleMenu('ai')" id="menu-ai">
+            <span :class="['arrow', { rotated: selectMenu === 'ai'}]">▶</span>
+            AI
+          </li>
+          <ul :class="{ open: selectMenu === 'ai'}" id="list-ai">
+            <li @click="fetchPosts('android-permission')" class="list-items">Android Permission</li>
+            <li @click="fetchPosts('chatbot')" class="list-items">Chatbot</li>
+            <li @click="fetchPosts('classification')" class="list-items">Classification</li>
+          </ul>
+
+          <li @click="toggleMenu('full')" id="menu-full">
+            <span :class="['arrow', { rotated: selectMenu === 'full'}]">▶</span>
+            Full Stack
+          </li>
+          <ul :class="{ open: selectMenu === 'full'}" id="list-full">
+            <li @click="fetchPosts('flea-market')" class="list-items">Flea Market</li>
+            <li @click="fetchPosts('green-code')" class="list-items">Green Code</li>
+          </ul>
+
+          <li @click="toggleMenu('about')" id="menu-about">
+            <span :class="['arrow', { rotated: selectMenu === 'about' }]">▶</span>
             About
           </li>
-          <ul :class="{ open: openMenu === 'about' }">
-            <li><router-link to="/about">소개</router-link></li>
+          <ul :class="{ open: selectMenu === 'about' }" id="list-about">
+            <li class="list-items"><router-link to="/about">소개</router-link></li>
           </ul>
         </ul>
       </aside>
 
       <main>
-        <router-view />
+        <PostList :posts="posts" />
       </main>
     </div>
 
@@ -45,17 +68,26 @@
 </template>
 
 <script>
-import PostDetail from './components/PostDetail.vue'
+import PostList from './components/PostList.vue';
 
 export default {
+  components: { PostList },
   data() {
     return {
-      openMenu: null,
+      selectMenu: null,
+      posts: [],
     };
   },
   methods: {
     toggleMenu(menuName) {
-      this.openMenu = this.openMenu === menuName ? null : menuName;
+      this.selectMenu = this.selectMenu === menuName ? null : menuName;
+    },
+    fetchPosts(category) {
+      fetch(`http://localhost:8000/board/api/posts/?category=${category}`)
+        .then(response => response.json())
+        .then(data => {
+          this.posts = data.posts;
+        });
     },
   },
 };
