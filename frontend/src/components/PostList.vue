@@ -1,11 +1,11 @@
 <template>
   <div>
-    <ul>
+    <ul class="post-list">
       <li v-for="post in posts" :key="post.id">
-        <h3>{{ post.title }}</h3>
-        <p>Category: {{ post.category }}, Date: {{ post.post_date }}</p>
-        <br>
-        <p>{{ post.content }}</p>
+        <div class="post-number">{{ post.id }}</div>
+        <router-link :to="{ name: 'PostDetail', params: { id: post.id } }">
+          {{ post.title }}
+        </router-link>
       </li>
     </ul>
   </div>
@@ -14,11 +14,27 @@
 <script>
 
 export default {
-  props: {
-    posts: {
-        type: Array,
-        required: true,
-        default: () => [],
+  props: ['category'],
+  data() {
+    return {
+      posts: [],
+    };
+  },
+  mounted() {
+    this.fetchPosts();
+  },
+  watch: {
+    category() { // :category 변경될 때마다 fetchPosts 재실행
+      this.fetchPosts();
+    },
+  },
+  methods: {
+    fetchPosts() {
+      fetch(`http://localhost:8000/board/api/posts/?category=${this.category}`)
+        .then(res => res.json())
+        .then(data => {
+          this.posts = data.posts;
+        });
     },
   },
 };

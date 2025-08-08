@@ -23,8 +23,16 @@
             Unity
           </li>
           <ul :class="{ open: selectMenu === 'unity'}" id="list-unity">
-            <li @click="fetchPosts('2d')" class="list-items">2D</li>
-            <li @click="fetchPosts('3d')" class="list-items">3D</li>
+            <li class="list-items">
+              <router-link :to="{ name: 'PostList', params: { category: '2d' }}">
+                2D
+              </router-link>
+            </li>
+            <li class="list-items">
+              <router-link :to="{ name: 'PostList', params: { category: '3d' }}">
+                3D
+              </router-link>
+            </li>
           </ul>
 
           <li @click="toggleMenu('ai')" id="menu-ai">
@@ -32,9 +40,21 @@
             AI
           </li>
           <ul :class="{ open: selectMenu === 'ai'}" id="list-ai">
-            <li @click="fetchPosts('android-permission')" class="list-items">Android Permission</li>
-            <li @click="fetchPosts('chatbot')" class="list-items">Chatbot</li>
-            <li @click="fetchPosts('classification')" class="list-items">Classification</li>
+            <li class="list-items">
+              <router-link :to="{ name: 'PostList', params: { category: 'android-permission' }}">
+                Android Permission
+              </router-link>
+            </li>
+            <li class="list-items">
+              <router-link :to="{ name: 'PostList', params: { category: 'chatbot' }}">
+                Chatbot
+              </router-link>
+            </li>
+            <li class="list-items">
+              <router-link :to="{ name: 'PostList', params: { category: 'classification' }}">
+                Classification
+              </router-link>
+            </li>
           </ul>
 
           <li @click="toggleMenu('full')" id="menu-full">
@@ -42,8 +62,16 @@
             Full Stack
           </li>
           <ul :class="{ open: selectMenu === 'full'}" id="list-full">
-            <li @click="fetchPosts('flea-market')" class="list-items">Flea Market</li>
-            <li @click="fetchPosts('green-code')" class="list-items">Green Code</li>
+            <li class="list-items">
+              <router-link :to="{ name: 'PostList', params: { category: 'flea-market' }}">
+                Flea Market
+              </router-link>
+            </li>
+            <li class="list-items">
+              <router-link :to="{ name: 'PostList', params: { category: 'green-code' }}">
+                Green Code
+              </router-link>
+            </li>
           </ul>
 
           <li @click="toggleMenu('about')" id="menu-about">
@@ -57,7 +85,7 @@
       </aside>
 
       <main>
-        <PostList :posts="posts" />
+        <router-view />
       </main>
     </div>
 
@@ -68,26 +96,15 @@
 </template>
 
 <script>
-import PostList from './components/PostList.vue';
-
 export default {
-  components: { PostList },
   data() {
     return {
       selectMenu: null,
-      posts: [],
     };
   },
   methods: {
     toggleMenu(menuName) {
       this.selectMenu = this.selectMenu === menuName ? null : menuName;
-    },
-    fetchPosts(category) {
-      fetch(`http://localhost:8000/board/api/posts/?category=${category}`)
-        .then(response => response.json())
-        .then(data => {
-          this.posts = data.posts;
-        });
     },
   },
 };

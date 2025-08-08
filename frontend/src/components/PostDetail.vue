@@ -12,36 +12,20 @@
 
 <script>
 export default {
-    props: {
-        postId: Number
-    },
+    props: ['id'],
     data() {
         return {
-            post: null,
-            loading: true,
-            error: null
+            post: {},
         };
     },
-    computed: {
-        formattedDate() {
-            return new Date(this.post.post_date).toLocaleDateString();
-        }
-    },
     mounted() {
-        fetch(`http://127.0.0.1:8000/board/api/posts/3/`) // 절대경로
+        fetch(`http://localhost:8000/board/api/posts/${this.id}`)
             .then(res => res.json())
-            /*.then(text => {
-                console.log('원본 응답:', text);
-            })*/
             .then(data => {
+                console.log(data);
                 this.post = data;
-                this.loading = false;
-            })
-            .catch(() => {
-                this.error = '불러오는데 실패했습니다.';
-                this.loading = false;
             });
-    }
+    },
 };
 </script>
 

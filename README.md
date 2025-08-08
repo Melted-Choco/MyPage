@@ -25,5 +25,9 @@ Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy Restricted
 ```
 
 ```sh
+npm install vue-router
+```
+
+```sh
 npm run dev
 ```
